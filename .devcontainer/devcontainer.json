@@ -1,0 +1,31 @@
+{
+    // 🏷️ Nombre del contenedor (puede aparecer como título en VS Code)
+    "name": "clearnote-py-da",
+    // 🔨 Instrucciones para construir el contenedor
+    "build": {
+        // 🐳 Indica que se usará el archivo 'Dockerfile' ubicado en esta misma carpeta
+        "dockerfile": "Dockerfile",
+        // 📁 'context' define el directorio raíz desde donde Docker interpretará rutas
+        // En este caso, el contexto es el directorio superior al que contiene .devcontainer
+        "context": ".."
+    },
+    // 📂 Define cuál será la carpeta de trabajo dentro del contenedor
+    // Usa automáticamente el nombre de la carpeta del proyecto local
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    // 🧩 Aquí se pueden agregar características adicionales predefinidas por VS Code
+    // Se deja vacío por ahora, pero podrías incluir por ejemplo: "ghcr.io/devcontainers/features/git:1"
+    "features": {},
+    // 🎨 Personalizaciones específicas de VS Code dentro del contenedor
+    "customizations": {
+        "vscode": {
+            // ⚙️ Configuraciones adicionales para este entorno (opcional si ya usas config global)
+            "settings": {},
+            // 🧩 Extensiones a instalar automáticamente en este contenedor
+            // Puedes dejarlo vacío si ya gestionas tus extensiones de forma global
+            "extensions": []
+        }
+    },
+    // 👤 Usuario por defecto del contenedor
+    // 'root' te da permisos para instalar paquetes y modificar configuraciones fácilmente
+    "remoteUser": "root"
+}
