@@ -1,31 +1,51 @@
 {
-    // 🏷️ Nombre del contenedor (puede aparecer como título en VS Code)
-    "name": "clearnote-py-da",
-    // 🔨 Instrucciones para construir el contenedor
-    "build": {
-        // 🐳 Indica que se usará el archivo 'Dockerfile' ubicado en esta misma carpeta
-        "dockerfile": "Dockerfile",
-        // 📁 'context' define el directorio raíz desde donde Docker interpretará rutas
-        // En este caso, el contexto es el directorio superior al que contiene .devcontainer
-        "context": ".."
-    },
-    // 📂 Define cuál será la carpeta de trabajo dentro del contenedor
-    // Usa automáticamente el nombre de la carpeta del proyecto local
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    // 🧩 Aquí se pueden agregar características adicionales predefinidas por VS Code
-    // Se deja vacío por ahora, pero podrías incluir por ejemplo: "ghcr.io/devcontainers/features/git:1"
-    "features": {},
-    // 🎨 Personalizaciones específicas de VS Code dentro del contenedor
-    "customizations": {
-        "vscode": {
-            // ⚙️ Configuraciones adicionales para este entorno (opcional si ya usas config global)
-            "settings": {},
-            // 🧩 Extensiones a instalar automáticamente en este contenedor
-            // Puedes dejarlo vacío si ya gestionas tus extensiones de forma global
-            "extensions": []
+  // 🏷️ Nombre del contenedor
+  "name": "clearnote-py-da",
+
+  // 🔨 Instrucciones de construcción
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // 📂 Carpeta de trabajo dentro del contenedor
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // 🧩 Características adicionales (puedes agregar si usas git, node, etc.)
+  "features": {},
+
+  // 🎨 Personalizaciones específicas para VS Code dentro del contenedor
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "jupyter.interactiveWindow.textEditor.executeSelection": true,
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter"
         }
-    },
-    // 👤 Usuario por defecto del contenedor
-    // 'root' te da permisos para instalar paquetes y modificar configuraciones fácilmente
-    "remoteUser": "root"
+      },
+      "extensions": [
+        "aaron-bond.better-comments",
+        "batisteo.vscode-django",
+        "christian-kohler.path-intellisense",
+        "github.copilot",
+        "github.copilot-chat",
+        "ms-python.black-formatter",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-toolsai.jupyter-keymap",
+        "ms-toolsai.jupyter-renderers",
+        "ms-toolsai.vscode-jupyter-cell-tags",
+        "ms-toolsai.vscode-jupyter-slideshow",
+        "njpwerner.autodocstring",
+        "pkief.material-icon-theme",
+        "visualstudioexptteam.vscodeintellicode"
+      ]
+    }
+  },
+
+  // 👤 Usuario dentro del contenedor
+  "remoteUser": "root"
 }
