@@ -1,28 +1,16 @@
 {
-  // 🏷️ Nombre del contenedor
   "name": "clearnote-py-da",
-
-  // 🔨 Instrucciones de construcción
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
-  },
-
+  // 🐳 Imagen base de Dev Containers (incluye VS Code + Python)
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
   // 📂 Carpeta de trabajo dentro del contenedor
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
-  // 🧩 Características adicionales (puedes agregar si usas git, node, etc.)
-  "features": {},
-
-  // 🎨 Personalizaciones específicas para VS Code dentro del contenedor
+  // ⚙️ Personalizaciones adicionales
   "customizations": {
     "vscode": {
       "settings": {
         "editor.formatOnSave": true,
         "jupyter.interactiveWindow.textEditor.executeSelection": true,
-        "[python]": {
-          "editor.defaultFormatter": "ms-python.black-formatter"
-        }
+        "workbench.iconTheme": "material-icon-theme"
       },
       "extensions": [
         "aaron-bond.better-comments",
@@ -30,7 +18,6 @@
         "christian-kohler.path-intellisense",
         "github.copilot",
         "github.copilot-chat",
-        "ms-python.black-formatter",
         "ms-python.debugpy",
         "ms-python.python",
         "ms-python.vscode-pylance",
@@ -45,7 +32,8 @@
       ]
     }
   },
-
-  // 👤 Usuario dentro del contenedor
+  // 🧰 Comandos para instalar herramientas adicionales (como si fueran RUNs del Dockerfile)
+  "postCreateCommand": "apt-get update && apt-get install -y build-essential && pip install --upgrade pip ipykernel && python -m ipykernel install --user --name clearnote --display-name 'Python (ClearNote)'",
+  // 👤 Usuario por defecto en el contenedor
   "remoteUser": "root"
 }

@@ -1,6 +1,6 @@
 # ✅ Imagen base ligera de Python 3.13.5 sobre Debian (versión "bookworm")
 # Usamos la variante "slim" para evitar componentes innecesarios y reducir el tamaño
-FROM python:3.13.5-slim-bookworm
+FROM python:3.11-bookworm
 
 # ⚙️ Evita que se muestren mensajes interactivos durante instalaciones con apt
 # Esto hace que la imagen se construya automáticamente sin pausas
