@@ -1,8 +1,8 @@
-# print('Hello World')
+print('Hello World')
 
-def main():
-    print('This is the main function.')
+# def main():
+#     print('This is the main function.')
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

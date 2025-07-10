@@ -1,7 +1,11 @@
 {
   "name": "clearnote-py-da",
   // 🐳 Imagen base de Dev Containers (incluye VS Code + Python)
-  "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
+  // "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
   // 📂 Carpeta de trabajo dentro del contenedor
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   // ⚙️ Personalizaciones adicionales
