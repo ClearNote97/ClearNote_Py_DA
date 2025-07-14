@@ -6,8 +6,7 @@ FROM python:3.13.2-slim-bookworm
 # Esto hace que la imagen se construya automáticamente sin pausas
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 🧱 Instalamos herramientas básicas para compilar paquetes de Python que lo requieran (como pandas, numpy, etc.)
-# 🔧 También actualizamos pip y agregamos ipykernel, que permite correr notebooks en VS Code sin necesidad de instalar JupyterLab completo
+# 🔧 Actualizamos pip y agregamos ipykernel, que permite correr notebooks en VS Code sin necesidad de instalar JupyterLab completo
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && pip install --no-cache-dir --upgrade pip \

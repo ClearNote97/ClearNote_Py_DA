@@ -1,7 +1,6 @@
 {
   "name": "clearnote-py-da",
   // 🐳 Imagen base de Dev Containers (incluye VS Code + Python)
-  // "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
   "build": {
     "dockerfile": "Dockerfile",
     "context": ".."
@@ -12,7 +11,9 @@
   "customizations": {
     "vscode": {
       "settings": {
+        "python.formatting.provider": "black",
         "editor.formatOnSave": true,
+        "editor.wordWrap": "on",
         "jupyter.interactiveWindow.textEditor.executeSelection": true,
         "workbench.iconTheme": "material-icon-theme"
       },
@@ -32,12 +33,13 @@
         "ms-toolsai.vscode-jupyter-slideshow",
         "njpwerner.autodocstring",
         "pkief.material-icon-theme",
-        "visualstudioexptteam.vscodeintellicode"
+        "visualstudioexptteam.vscodeintellicode",
+        "ms-python.black-formatter"
       ]
     }
   },
-  // 🧰 Comandos para instalar herramientas adicionales (como si fueran RUNs del Dockerfile)
-  "postCreateCommand": "apt-get update && apt-get install -y build-essential && pip install --upgrade pip ipykernel && python -m ipykernel install --user --name clearnote --display-name 'Python (ClearNote)'",
   // 👤 Usuario por defecto en el contenedor
-  "remoteUser": "root"
+  "remoteUser": "root",
+  // 🐍 Se instalan las librerías requeridas para el proyecto
+  "postCreateCommand": "pip install -r requirements.txt"
 }
