@@ -106,5 +106,5 @@ Distribuido bajo la licencia [MIT](https://opensource.org/license/MIT). Puedes c
 
 **MSc. Nicolás Enrique Valencia Santiago**
 
-# README Mofificable:
+# README Modificable:
 Vale la pena aclarar que el contenido de este README.md debe de ser modificado para adaptarse al proyecto para el que se quiera usar.
