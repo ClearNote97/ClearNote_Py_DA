@@ -14,7 +14,7 @@
         "python.formatting.provider": "black",
         "editor.formatOnSave": true,
         "editor.wordWrap": "on",
-        "jupyter.interactiveWindow.textEditor.executeSelection": true,
+        "jupyter.sendSelectionToInteractiveWindow": true,
         "workbench.iconTheme": "material-icon-theme"
       },
       "extensions": [
