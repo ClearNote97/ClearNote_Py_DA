@@ -1,0 +1,18 @@
+# Data manipulation and analysis
+pandas
+numpy
+
+# Excel file handling
+openpyxl
+xlsxwriter
+xlrd
+fastexcel
+pyarrow
+
+# Jupyter and interactive computing
+ipython
+ipynbname
+
+# Utility libraries
+python-dateutil
+python-dotenv

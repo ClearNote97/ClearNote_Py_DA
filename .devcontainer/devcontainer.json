@@ -33,7 +33,6 @@
         "ms-toolsai.vscode-jupyter-slideshow",
         "njpwerner.autodocstring",
         "pkief.material-icon-theme",
-        "visualstudioexptteam.vscodeintellicode",
         "ms-python.black-formatter"
       ]
     }

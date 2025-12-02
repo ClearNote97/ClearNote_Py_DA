@@ -30,7 +30,7 @@ Esta plantilla está diseñada para:
 ```bash
 cd tu_ruta/
 
-git clone https://github.com/tu_usuario/ClearNote_Py_DA.git
+git clone https://github.com/ClearNote97/ClearNote_Py_DA.git
 
 cd ClearNote_Py_DA
 
@@ -40,6 +40,23 @@ Este paso elimina la conexión con el repositorio de origen en GitHub, para que 
 
 ```bash
 rm -rf .git
+```
+
+Se le cambia el nombre a la carpeta, para que se diferencie de la plantilla original:
+
+```bash
+cd ~
+
+cd tu_ruta/
+
+mv ClearNote_Py_DA nuevo_nombre
+
+cd nuevo_nombre
+```
+
+Se inicia un nuevo proyecto con GIT:
+
+```bash
 git init
 git add .
 git commit -m "Proyecto inicial basado en plantilla ClearNote Py DA"
@@ -88,7 +105,7 @@ Puedes personalizar este archivo para incluir tus propias librerías.
 - Configuración útil incluida:
 
 ```json
-"jupyter.interactiveWindow.textEditor.executeSelection": true
+"jupyter.sendSelectionToInteractiveWindow": true
 ```
 
 - Para evitar errores de interfaz en Linux:
