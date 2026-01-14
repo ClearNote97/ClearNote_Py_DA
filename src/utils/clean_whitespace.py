@@ -6,11 +6,10 @@ Primer paso del flujo de procesamiento de datos.
 """
 Limpieza de espacios en blanco en DataFrames.
 """
+import re
 import numpy as np
-import pandas as pd
 
 
-# # Limpieza de espacios en blanco en columnas y valores del DataFrame
 def limpiar_espacios_en_blanco(df):
     df = df.copy()  # Crear una copia para no modificar el original directamente
 
@@ -20,15 +19,16 @@ def limpiar_espacios_en_blanco(df):
         for col in df.columns
     ]
 
-    try:
-        # Intentar eliminar espacios al inicio y final usando expresión regular en nombres de columnas
-        df.columns = [
-            col.replace(r"^\s+|\s+$", "", regex=True) if isinstance(col, str) else col
-            for col in df.columns
-        ]
-    except TypeError:
-        # En caso de que alguna columna no soporte replace con regex, se ignora el error
-        pass
+    # 🔧 CORREGIDO: usar re.sub() en lugar de .replace() con regex
+    df.columns = [
+        re.sub(r"^\s+|\s+$", "", col) if isinstance(col, str) else col
+        for col in df.columns
+    ]
+
+    # Reemplazar múltiples espacios/saltos de línea internos por un solo espacio
+    df.columns = [
+        re.sub(r"\s+", " ", col) if isinstance(col, str) else col for col in df.columns
+    ]
 
     # Eliminar espacios al inicio y final en todos los valores del DataFrame (celdas)
     df = df.replace(r"^\s+|\s+$", "", regex=True)
