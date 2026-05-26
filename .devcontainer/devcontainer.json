@@ -7,11 +7,10 @@
   },
   // 📂 Carpeta de trabajo dentro del contenedor
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  // ⚙️ Personalizaciones adicionales
   "customizations": {
+    // ⚙️ Personalizaciones adicionales para VS Code
     "vscode": {
       "settings": {
-        // --- Ruff: El nuevo estándar de formateo y limpieza ---
         "[python]": {
           "editor.defaultFormatter": "charliermarsh.ruff",
           "editor.formatOnSave": true,
@@ -20,19 +19,22 @@
             "source.organizeImports.ruff": "explicit"
           }
         },
+        // Se establece el intérprete de Python dentro del entorno virtual creado por uv
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
         "python.analysis.typeCheckingMode": "basic",
         "python.analysis.inlayHints.variableTypes": true,
         "python.analysis.inlayHints.functionReturnTypes": true,
         "editor.wordWrap": "on",
         "workbench.iconTheme": "material-icon-theme"
       },
+      // Extensiones recomendadas para una experiencia de desarrollo óptima
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "charliermarsh.ruff",        // Sustituye a Black, Isort y Flake8
-        "ms-toolsai.jupyter",        // Vital para probar transformaciones rápidas
-        "tamasfe.even-better-toml",  // Configuración de herramientas modernas
-        "github.copilot",            // Tu copiloto de IA
+        "charliermarsh.ruff",
+        "ms-toolsai.jupyter",
+        "tamasfe.even-better-toml",
+        "github.copilot",
         "christian-kohler.path-intellisense",
         "pkief.material-icon-theme"
       ]
@@ -40,6 +42,7 @@
   },
   // 👤 Usuario por defecto en el contenedor
   "remoteUser": "root",
-  // 🐍 Se instalan las librerías requeridas para el proyecto
-  "postCreateCommand": "pip install -r requirements.txt"
+
+  // 🐍 Comando para instalar dependencias usando uv, que es un gestor de paquetes moderno y eficiente. Se verifica si existe pyproject.toml o requirements.txt para decidir cómo instalar las dependencias.
+  "postCreateCommand": "sh -lc 'if [ -f pyproject.toml ]; then if [ -f uv.lock ]; then uv sync --locked; else uv lock && uv sync; fi; elif [ -f requirements.txt ]; then uv init --no-package --no-workspace . && rm -f main.py && uv add -r requirements.txt; else echo \"No se encontró ni pyproject.toml ni requirements.txt\" >&2; exit 1; fi'"
 }
