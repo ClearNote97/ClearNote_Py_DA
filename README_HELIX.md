@@ -289,6 +289,16 @@ Y en `src/db/connection.py`, **un engine por motor con nombre propio**: `get_eng
 
 > **`NAME` y `PORT` son opcionales.** Si no se definen (vienen vacíos/None), `URL.create()` los omite — útil cuando se trabaja contra un **DataWarehouse** sin seleccionar una única base de datos. No estorban si no están.
 
+### Dialecto y driver por motor
+
+| Motor | Dialecto SQLAlchemy | Paquete (`uv add` / `requirements.txt`) | System deps (Dockerfile) |
+|---|---|---|---|
+| **SQL Server** | `mssql+pyodbc` | `pyodbc` | `unixodbc-dev` + `msodbcsql17` (repo Microsoft, vía keyring en Debian 12) |
+| **PostgreSQL** | `postgresql+psycopg` | `psycopg[binary]` | ninguna con `[binary]`; `libpq-dev` solo si compila de fuente |
+| **Oracle** | `oracle+oracledb` | `oracledb` | ninguna en modo *thin*; Oracle Instant Client (+`libaio1`) en modo *thick* |
+
+> La plantilla SQL trae **SQL Server activo** como ejemplo; PostgreSQL y Oracle van **comentados** en `src/db/connection.py`, `requirements.txt`, `.env.example` y el `Dockerfile`. Para cambiar de motor: descomentar su función, su driver, su grupo de variables y (si aplica) sus system deps.
+
 ### Dos casos de conexión
 
 **Caso A — Conexión directa.** El motor es alcanzable directamente (SQL Server en la red, o un Postgres sin túnel). El engine se arma con **`URL.create()`**, que **escapa solo** usuario, contraseña y parámetros — sin `quote_plus` manual ni `odbc_connect`, y omitiendo `NAME`/`PORT` cuando son `None`.
