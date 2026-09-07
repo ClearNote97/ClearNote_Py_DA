@@ -4,7 +4,7 @@ Plantilla **reproducible, ligera y portable** para proyectos de análisis de dat
 **VS Code + Dev Containers + Docker + `uv`**. El objetivo es trabajar en un entorno **aislado y
 consistente**, sin instalar el toolchain del proyecto en tu máquina anfitriona.
 
-> **¿Buscas cómo trabajamos día a día (la dinámica Helix ⇄ tú)?** Eso vive en **[`README_HELIX.md`](./README_HELIX.md)**.
+> **¿Buscas cómo trabajamos día a día (la dinámica agente ⇄ tú)?** Eso vive en **[`README_AGENTS.md`](./README_AGENTS.md)**.
 > Este archivo es el *qué es y cómo se instala*; ese otro es el *cómo colaboramos*.
 
 ---
@@ -132,18 +132,18 @@ contenedor, el `postCreateCommand` detecta el estado del proyecto y actúa solo:
 ├── .env.example        # plantilla de variables de entorno (copiar a .env)
 ├── requirements.txt    # dependencias (base para pyproject.toml + uv.lock)
 ├── README.md           # este archivo (qué es y cómo se instala)
-└── README_HELIX.md     # el contrato de trabajo (dinámica Helix ⇄ tú)
+└── README_AGENTS.md     # el contrato de trabajo (dinámica agente ⇄ tú)
 ```
 
 **Flujo de trabajo:** `sandbox/` (tanteo sucio) → `tests/` (gate que verifica) → `output/` (solo lo
 comprobado). Cada carpeta tiene su propio `README.md` explicando su rol. La dinámica completa está en
-**[`README_HELIX.md`](./README_HELIX.md)**.
+**[`README_AGENTS.md`](./README_AGENTS.md)**.
 
 ---
 
 ## 🧹 Qué se versiona y qué no
 
-**Se versiona:** `README.md`, `README_HELIX.md`, `.devcontainer/*`, `requirements.txt` (o
+**Se versiona:** `README.md`, `README_AGENTS.md`, `.devcontainer/*`, `requirements.txt` (o
 `pyproject.toml`), `uv.lock` cuando exista, `tests/`, `output/`, los `README.md` de cada carpeta.
 
 **No se versiona:** `.venv/`, `__pycache__/`, `*.pyc`, `.env`, y el **contenido** de `sandbox/`.

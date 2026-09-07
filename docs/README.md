@@ -1,10 +1,10 @@
 # `docs/` — documentación del proyecto
 
-Documentación del proyecto, legible para tus yos futuros y para Helix.
+Documentación del proyecto, legible para tus yos futuros y para el agente (Claude Code / OpenCode / Helix).
 
 **Contenido estándar:**
 - [`bitacora-decisiones.md`](./bitacora-decisiones.md) — el *por qué* de cada decisión no trivial.
-  **Fuente única de verdad** de las decisiones; la memoria de Helix apunta aquí (ver [`../README_HELIX.md`](../README_HELIX.md) §7).
+  **Fuente única de verdad** de las decisiones; la memoria del agente apunta aquí (ver [`../README_AGENTS.md`](../README_AGENTS.md) §7).
 - [`diccionario-de-datos.md`](./diccionario-de-datos.md) — qué significa cada variable/campo de los datos.
 
 **Notas:**

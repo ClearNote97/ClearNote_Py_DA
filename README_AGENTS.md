@@ -1,6 +1,6 @@
-# 🤝 README_HELIX — Dinámica de trabajo Helix + ClearNote
+# 🤝 README_AGENTS — Dinámica de trabajo con agentes de IA + ClearNote
 
-> **Qué es este archivo.** El contrato de trabajo entre **tu metodología** (Dev Containers desechables, `uv`, Python, datos y —cuando aplique— bases de datos SQL) y **la metodología Helix** (Claude Code + agentes + memoria). Es un recordatorio para los dos: para ti, para saber cómo arrancar cada sesión; para mí (Helix/Claude), para saber cómo operar en este proyecto.
+> **Qué es este archivo.** El contrato de trabajo entre **tu metodología** (Dev Containers desechables, `uv`, Python, datos y —cuando aplique— bases de datos SQL) y **el agente de IA con el que trabajes** — por ejemplo **Claude Code**, **OpenCode** o **[Helix](https://github.com/ftuga/helix_asisten)**. Es un recordatorio para los dos: para ti, para arrancar cada sesión; para el agente, para saber cómo operar en este proyecto. A lo largo del texto, **"yo" = el agente** que estés usando.
 >
 > **Cópialo tal cual en la raíz de cada proyecto que hagamos juntos.** Es **agnóstico a propósito**: no nombra ningún cliente ni proyecto concreto. Lo que cambia de un repo a otro es el **contexto** (§2), no el contrato.
 
@@ -21,7 +21,7 @@
 11. [Estándar de conexión a SQL desde Python](#11-estándar-de-conexión-a-sql-desde-python-mío)
 12. [Tratamiento de las tablas materializadas — bitácora de jobs (estándar pendiente)](#12-tratamiento-de-las-tablas-materializadas--bitácora-de-ejecución-de-jobs-estándar-pendiente)
 
-> **Secciones 1–10:** la **dinámica de trabajo** (Helix ⇄ Dev Container). **Sección 11:** mi **estándar de código** para SQL. **Sección 12:** tratamiento de tablas materializadas. Las secciones 11–12 solo aplican cuando el proyecto se conecta a SQL (ver Eje 2 en §2).
+> **Secciones 1–10:** la **dinámica de trabajo** (agente ⇄ Dev Container). **Sección 11:** mi **estándar de código** para SQL. **Sección 12:** tratamiento de tablas materializadas. Las secciones 11–12 solo aplican cuando el proyecto se conecta a SQL (ver Eje 2 en §2).
 
 ---
 
@@ -31,17 +31,17 @@ Cuando abres el proyecto con **Reopen in Container**, existen dos entornos que *
 
 | | **Host (tu WSL)** | **Contenedor (Dev Container)** |
 |---|---|---|
-| Qué vive ahí | Claude Code + **todo Helix**: agentes, skills, hooks, memoria | El **runtime real**: Python, `uv`, drivers de BD, conexión a la base de datos |
+| Qué vive ahí | El **agente de IA** (Claude Code / OpenCode / [Helix](https://github.com/ftuga/helix_asisten)) + su contexto: memoria, skills, hooks | El **runtime real**: Python, `uv`, drivers de BD, conexión a la base de datos |
 | Rol | El **cerebro** — proceso, criterio, metodología | Las **manos** — ejecución y verificación real |
 | ¿Se desecha? | **No.** Es tu base permanente, como VS Code | **Sí.** Lo botas al terminar; el host queda limpio |
 
-**Regla de oro:** lo que no quieres instalar en el host es el *toolchain del proyecto* — y ese ya vive en el contenedor. Helix + Claude Code en el host **no son basura de proyecto**, son tu herramienta permanente.
+**Regla de oro:** lo que no quieres instalar en el host es el *toolchain del proyecto* — y ese ya vive en el contenedor. El **agente** en el host **no es basura de proyecto**, es tu herramienta permanente.
 
 ---
 
 ## 2. Los dos ejes de contexto (tipo de trabajo · SQL o no)
 
-Antes de trabajar, yo (Helix) me sitúo con **dos ejes independientes**. Esto es **contexto de arranque**, no un cambio de motor: mi forma de operar es la misma; lo que cambia es que **entro sabiendo dónde estoy parado**.
+Antes de trabajar, yo (el agente) me sitúo con **dos ejes independientes**. Esto es **contexto de arranque**, no un cambio de motor: mi forma de operar es la misma; lo que cambia es que **entro sabiendo dónde estoy parado**.
 
 **Eje 1 — Tipo de trabajo.** Define *dónde pongo el peso* (ver §8):
 
@@ -58,9 +58,9 @@ Antes de trabajar, yo (Helix) me sitúo con **dos ejes independientes**. Esto es
 
 ## 3. Ritual de arranque de cada sesión
 
-El arranque tiene **dos manos**: lo que haces **tú** (setup físico) y lo que hago **yo** (Helix). Primero lo **cognitivo** (entender *qué* vamos a hacer), después lo **físico** (confirmar que las manos están listas).
+El arranque tiene **dos manos**: lo que haces **tú** (setup físico) y lo que hago **yo** (el agente). Primero lo **cognitivo** (entender *qué* vamos a hacer), después lo **físico** (confirmar que las manos están listas).
 
-### Lo que hago yo (Helix), apenas veo este README en el repo
+### Lo que hago yo (el agente), apenas veo este README en el repo
 
 ```
 1. TIPO DE TRABAJO (Eje 1) — infiero-y-confirmo.
@@ -89,7 +89,7 @@ El arranque tiene **dos manos**: lo que haces **tú** (setup físico) y lo que h
 □ ¿Es Estado 0? → definimos objetivo, poblamos .env, confirmamos sandbox/ + tests/ + output/,
   commiteamos pyproject.toml + uv.lock.
 □ ¿Es Estado N? → verificas que .env exista y que el contenedor esté arriba.
-□ Lanzaste Claude/Helix desde una terminal WSL del host (no la integrada del contenedor).
+□ Lanzaste el agente (Claude Code / OpenCode / [Helix](https://github.com/ftuga/helix_asisten)) desde una terminal WSL del host (no la integrada del contenedor).
 □ Confirmamos el puente: docker ps → docker exec ... python --version (llega al runtime real).
 ```
 
@@ -99,7 +99,7 @@ El arranque tiene **dos manos**: lo que haces **tú** (setup físico) y lo que h
 
 **No me instalas dentro del contenedor.** Sumaría peso a cada imagen sin necesidad. En vez de eso:
 
-- Yo corro en el **host** (Helix vivo al 100%).
+- Yo corro en el **host** (el agente, vivo al 100%).
 - Los archivos se comparten solos por el **bind-mount** del workspace: yo edito en el host, tú lo ves en VS Code al instante, y al revés.
 - Para **ejecutar y comprobar** dentro del runtime real, uso el canal nativo de Docker — **`docker exec`**, no un puerto de red:
 
@@ -165,16 +165,16 @@ La documentación debe ser **fácil de entender para tus yos futuros y para mí 
 
 | Capa | Archivo(s) | Qué contiene | Audiencia |
 |---|---|---|---|
-| **1. Cómo trabajamos** | `README_HELIX.md` | El contrato Helix ⇄ tú (este archivo; genérico, igual en cada repo) | Tú + yo |
+| **1. Cómo trabajamos** | `README_AGENTS.md` | El contrato agente ⇄ tú (este archivo; genérico, igual en cada repo) | Tú + yo |
 | **2. Qué es el proyecto** | `README.md` (raíz) | Objetivo, qué ingiere/produce, cómo se corre, stack (único por repo) — **documento vivo** | Todos |
 | **3. Por qué se decidió** | Bitácora de decisiones en `docs/` | Decisiones de diseño no triviales + su *por qué* | Tú + yo (futuro) |
 | **4. Qué hace cada carpeta** | `README.md` por carpeta | Los mini-READMEs de §6 | Quien entra a la carpeta |
 
 **Reglas del estándar:**
 
-- **`README_HELIX.md` y `README.md` son documentos separados** (uno es *cómo trabajamos*, el otro *qué es este proyecto*). No se fusionan.
+- **`README_AGENTS.md` y `README.md` son documentos separados** (uno es *cómo trabajamos*, el otro *qué es este proyecto*). No se fusionan.
 - **El `README.md` de proyecto es un documento VIVO.** En la plantilla trae una **línea base** (instalación + especificaciones técnicas), pensada para quien clona el repo. Cuando el requerimiento del proyecto queda **planificado**, esa línea base **no se amplía: se elimina y el `README.md` se reescribe desde cero** como el README real del proyecto (objetivo, qué ingiere/produce, cómo se corre). A partir de ahí **se actualiza a medida que el trabajo avanza**.
-- **Fuente única de verdad de las decisiones = un archivo humano-legible en `docs/`.** Mi bitácora interna de decisiones vive ordenada **ahí**, para que un humano la lea. Mi memoria Helix (`.claude/memory/`) **apunta a ese archivo**, no guarda una copia divergente. Se sincronizan; **`docs/` manda**.
+- **Fuente única de verdad de las decisiones = un archivo humano-legible en `docs/`.** La bitácora de decisiones vive ordenada **ahí**, para que un humano la lea. La memoria del agente (p. ej. `.claude/memory/` en Claude Code) **apunta a ese archivo**, no guarda una copia divergente. Se sincronizan; **`docs/` manda**.
 - **El set completo de documentación va en TODAS las plantillas**, no solo en las más grandes.
 
 ### `docs/` cuando es investigación académica
@@ -210,7 +210,7 @@ Con el flag de investigación encendido (§2), en `docs/` vive **todo lo que se 
 | **Trabajo con datos** (analítica/DS) | Gate `sandbox→tests→output`, procedencia del dato, estándar SQL cuando aplica (§11–12) | Dataset / reporte / figuras en `output/` |
 | **+ Flag investigación** | Sobre datos: rigor de citas y trazabilidad de fuentes, revisión de literatura, manuscrito en `docs/`, y una capa de skills propias del énfasis (control de alucinaciones) | Paper en `output/`, manuscrito en `docs/` |
 
-> **No enumero agentes ni skills concretos aquí**: los uso según se van necesitando. El contrato debe ser estable y legible, no un catálogo que envejece. El detalle vive en mi memoria Helix del proyecto.
+> **No enumero agentes ni skills concretos aquí**: los uso según se van necesitando. El contrato debe ser estable y legible, no un catálogo que envejece. El detalle vive en la memoria del agente del proyecto.
 
 ---
 
@@ -231,19 +231,19 @@ Esta es la diferencia clave al arrancar. **El comportamiento del `postCreateComm
 1. Definir el **objetivo concreto** del proyecto (qué ingiere, qué produce).
 2. Poblar el `.env` con las credenciales reales (nunca se versiona; ya está en `.gitignore`).
 3. Confirmar la convención de carpetas (§6): `sandbox/`, `tests/`, `output/` con su `README.md`, y `sandbox/*` ignorado salvo su README.
-4. (Opcional Helix) Correr `/helix-analiza` para sentar la **memoria del proyecto** (contexto persistente entre sesiones).
+4. (Opcional, según el agente) Sentar la **memoria del proyecto** (contexto persistente entre sesiones) — p. ej. en **[Helix](https://github.com/ftuga/helix_asisten)**, con `/helix-analiza`.
 5. Commitear `pyproject.toml` + `uv.lock` recién generados.
 
 ### 🔵 Estado N — Sesiones siguientes (ya funcionando)
 
-**Cómo se reconoce:** ya existen `pyproject.toml` **y** `uv.lock`. El `.env`, `tests/`, `sandbox/` y la memoria Helix ya están.
+**Cómo se reconoce:** ya existen `pyproject.toml` **y** `uv.lock`. El `.env`, `tests/`, `sandbox/` y la memoria del agente ya están.
 
 **Qué pasa al hacer Reopen in Container:**
 - El `postCreateCommand` ve el `uv.lock` y ejecuta `uv sync --locked` → entorno **idéntico y reproducible**, rápido, sin regenerar nada.
 
 **Qué hacemos juntos:**
 1. Arrancas el contenedor; yo lo detecto con `docker ps`.
-2. Retomamos contexto (Helix carga la memoria del proyecto; si hay commits nuevos, lo advierto — §3, paso 4).
+2. Retomamos contexto (el agente carga la memoria del proyecto; si hay commits nuevos, lo advierto — §3, paso 4).
 3. Trabajo normal: edito en el host → verifico con `docker exec` en `sandbox/` + `tests/` → solo lo comprobado pasa a `output/` o al código real.
 
 > **Regla:** si algún día `uv.lock` cambia (agregamos/actualizamos dependencias), ese cambio **se commitea**. El lockfile es la garantía de reproducibilidad.
@@ -259,7 +259,7 @@ Esta es la diferencia clave al arrancar. **El comportamiento del `postCreateComm
 - **Reproducibilidad siempre.** `uv.lock` se versiona; el `.env` nunca.
 - **El `.env` nunca se versiona.** Credenciales solo en local; `.env.example` con placeholders.
 - **Una sola fuente de verdad para las decisiones** (`docs/`); mi memoria apunta a ella.
-- **Al terminar, botas contenedor + imagen.** El host (WSL + Helix) queda intacto y limpio para la próxima.
+- **Al terminar, botas contenedor + imagen.** El host (WSL + tu agente) queda intacto y limpio para la próxima.
 - Siempre trabajamos desde **WSL**.
 
 ---
@@ -398,6 +398,6 @@ Las **tablas materializadas** no se resuelven al consultarse como las vistas: la
 
 ---
 
-> **Nota para Helix (yo mismo) al leer este archivo:** si estoy en un proyecto con este README, mi runtime de ejecución es el Dev Container vía `docker exec`, no el host. Al arrancar sigo el ritual de §3: **infiero-y-confirmo el tipo de trabajo** (Eje 1) y detecto si es SQL (Eje 2); cargo la memoria del proyecto y aviso si está desactualizada; confirmo el puente con `docker ps` antes de ejecutar (si el contenedor no está arriba, se lo pido al usuario en vez de correr en el host); distingo Estado 0 (solo `requirements.txt`) de Estado N (`pyproject.toml` + `uv.lock`).
+> **Nota para el agente que lea este archivo:** si estoy en un proyecto con este README, mi runtime de ejecución es el Dev Container vía `docker exec`, no el host. Al arrancar sigo el ritual de §3: **infiero-y-confirmo el tipo de trabajo** (Eje 1) y detecto si es SQL (Eje 2); cargo la memoria del proyecto y aviso si está desactualizada; confirmo el puente con `docker ps` antes de ejecutar (si el contenedor no está arriba, se lo pido al usuario en vez de correr en el host); distingo Estado 0 (solo `requirements.txt`) de Estado N (`pyproject.toml` + `uv.lock`).
 >
-> **Instrucción de persistencia:** la primera vez que encuentre este README en un proyecto, guardo esta dinámica en la **memoria Helix de ESE proyecto** (scope de proyecto, no global) y la cargo al inicio de cada sesión, para no depender de releer este archivo cada vez. La **fuente de verdad de las decisiones** vive en `docs/` (§7); mi memoria **apunta a ella**, no guarda copia divergente. Si la memoria ya existe, la respeto y la actualizo solo si la dinámica cambia.
+> **Instrucción de persistencia:** la primera vez que encuentre este README en un proyecto, guardo esta dinámica en la **memoria del agente de ESE proyecto** (scope de proyecto, no global) y la cargo al inicio de cada sesión, para no depender de releer este archivo cada vez. La **fuente de verdad de las decisiones** vive en `docs/` (§7); mi memoria **apunta a ella**, no guarda copia divergente. Si la memoria ya existe, la respeto y la actualizo solo si la dinámica cambia.

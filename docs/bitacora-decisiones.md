@@ -1,7 +1,7 @@
 # 📓 Bitácora de decisiones
 
 > **Fuente única de verdad** de las decisiones de diseño no triviales del proyecto
-> (ver [`../README_HELIX.md`](../README_HELIX.md) §7). La memoria de Helix **apunta aquí**, no guarda copia aparte.
+> (ver [`../README_AGENTS.md`](../README_AGENTS.md) §7). La memoria del agente **apunta aquí**, no guarda copia aparte.
 >
 > **Cómo se usa:** una entrada por decisión, en orden cronológico (la más antigua primero). Cada decisión
 > tiene un ID `D-NNN` que **no se reutiliza**. Si una decisión reemplaza o revierte a otra, se enlazan por
