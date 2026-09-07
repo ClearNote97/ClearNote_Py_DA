@@ -1,95 +1,103 @@
-"""
-Módulo para cambio de formatos de variables clave.
-Convierte tipos de datos según requerimientos del análisis.
+"""Conversión de formatos de variables (fechas, enteros, decimales).
+
+Cada función recorre las columnas indicadas, convierte las que existen y reporta por
+consola las que fallan, sin interrumpir el resto del DataFrame.
 """
 
-"""
-Conversión de formatos de variables (fechas, floats, etc).
-"""
-import numpy as np
+from typing import Literal
+
 import pandas as pd
 
+TimestampUnit = Literal["ms", "s", "excel"]
 
-# # Formatear columnas específicas como formato adecuado
-# Formato de Fechas
-def format_dates(df, columns, date_format=None, timestamp_unit=None):
-    """
-    Convierte columnas a datetime detectando el tipo de dato y reportando errores para corrección manual.
 
-    Parámetros:
-    - df: DataFrame
-    - columns: lista de columnas a convertir
-    - date_format: formato de fecha para strings (opcional)
-    - timestamp_unit: si la columna es numérica, puede ser:
-        * 'ms' para milisegundos Unix timestamp
-        * 's' para segundos Unix timestamp
-        * 'excel' para números estilo Excel (días desde 1899-12-30)
-        * None para inferir automáticamente
+def _parse_a_datetime(
+    serie: pd.Series,
+    date_format: str | None,
+    timestamp_unit: TimestampUnit | None,
+) -> pd.Series:
+    """Parsea una serie a datetime, distinguiendo numérico de texto. Lanza en error."""
+    if pd.api.types.is_numeric_dtype(serie):
+        if timestamp_unit == "ms":
+            return pd.to_datetime(serie, unit="ms", errors="raise")
+        if timestamp_unit == "s":
+            return pd.to_datetime(serie, unit="s", errors="raise")
+        if timestamp_unit == "excel":
+            return pd.to_datetime("1899-12-30") + pd.to_timedelta(serie, unit="D")
+        # Inferir: valores muy grandes suelen venir en milisegundos
+        unidad = "ms" if serie.max() > 1e12 else "s"
+        return pd.to_datetime(serie, unit=unidad, errors="raise")
+    return pd.to_datetime(serie, format=date_format, errors="raise")
 
-    Retorna:
-    - df con columnas convertidas a datetime cuando es posible
-    """
+
+def _formatear_temporal(
+    df: pd.DataFrame,
+    columns: list[str],
+    date_format: str | None,
+    timestamp_unit: TimestampUnit | None,
+    conservar_hora: bool,
+) -> pd.DataFrame:
+    """Núcleo compartido por `format_dates` y `format_datetime`."""
     for col in columns:
-        if col in df.columns:
-            try:
-                if pd.api.types.is_numeric_dtype(df[col]):
-                    # Columna numérica: interpretar según timestamp_unit
-                    if timestamp_unit == "ms":
-                        df[col] = pd.to_datetime(df[col], unit="ms", errors="raise")
-                    elif timestamp_unit == "s":
-                        df[col] = pd.to_datetime(df[col], unit="s", errors="raise")
-                    elif timestamp_unit == "excel":
-                        df[col] = pd.to_datetime("1899-12-30") + pd.to_timedelta(
-                            df[col], unit="D"
-                        )
-                    else:
-                        # Inferir unidad según valor máximo
-                        max_val = df[col].max()
-                        if max_val > 1e12:
-                            df[col] = pd.to_datetime(df[col], unit="ms", errors="raise")
-                        else:
-                            df[col] = pd.to_datetime(df[col], unit="s", errors="raise")
-                else:
-                    # Columna no numérica: convertir a string y parsear
-                    df[col] = df[col].astype(str).str.split().str[0]
-                    if date_format:
-                        df[col] = pd.to_datetime(
-                            df[col], format=date_format, errors="raise"
-                        )
-                    else:
-                        df[col] = pd.to_datetime(df[col], errors="raise")
-            except Exception as e:
-                print(f"Error formateando columna {col}: {e}")
-                # Mostrar valores problemáticos para corrección manual
-                invalid_mask = (
-                    ~df[col].apply(lambda x: pd.to_datetime(x, errors="coerce")).notna()
-                )
-                print(f"Valores problemáticos en columna {col}:")
-                print(df.loc[invalid_mask, col].unique())
-                # No modificar la columna para que puedas corregir manualmente
+        if col not in df.columns:
+            continue
+        try:
+            convertida = _parse_a_datetime(df[col], date_format, timestamp_unit)
+            df[col] = convertida if conservar_hora else convertida.dt.normalize()
+        except (ValueError, TypeError) as e:
+            print(f"Error formateando columna {col}: {e}")
+            invalidos = df.loc[pd.to_datetime(df[col], errors="coerce").isna(), col]
+            print(f"Valores problemáticos en columna {col}: {invalidos.unique()}")
     return df
 
 
-# # Fromato de números
-# Enteros
-def format_int(df, columns):
+def format_dates(
+    df: pd.DataFrame,
+    columns: list[str],
+    date_format: str | None = None,
+    timestamp_unit: TimestampUnit | None = None,
+) -> pd.DataFrame:
+    """Convierte columnas a fecha, **descartando la hora** (queda a medianoche).
+
+    - `columns`: columnas a convertir (las que no existan se ignoran).
+    - `date_format`: formato para columnas de texto (opcional; si falta, se infiere).
+    - `timestamp_unit`: para columnas numéricas — `"ms"`, `"s"` o `"excel"`; si falta, se infiere.
+
+    Para conservar la hora, usa `format_datetime`.
+    """
+    return _formatear_temporal(df, columns, date_format, timestamp_unit, conservar_hora=False)
+
+
+def format_datetime(
+    df: pd.DataFrame,
+    columns: list[str],
+    date_format: str | None = None,
+    timestamp_unit: TimestampUnit | None = None,
+) -> pd.DataFrame:
+    """Convierte columnas a fecha y hora, **conservando la hora**.
+
+    Misma firma que `format_dates`; la única diferencia es que no descarta el componente horario.
+    """
+    return _formatear_temporal(df, columns, date_format, timestamp_unit, conservar_hora=True)
+
+
+def format_int(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
+    """Convierte columnas a entero **nullable** (`Int64`), tolerando NaN."""
     for col in columns:
         if col in df.columns:
             try:
-                # Asignar la conversión para modificar el DataFrame
-                df[col] = df[col].astype("int64")
-            except Exception as e:
+                df[col] = df[col].astype("Int64")
+            except (ValueError, TypeError) as e:
                 print(f"Error formateando columna {col}: {e}")
     return df
 
 
-# Flotantes - Decimales
-def format_flt(df, columns):
+def format_flt(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
+    """Convierte columnas a decimal (`float64`)."""
     for col in columns:
         if col in df.columns:
             try:
-                # Asignar la conversión para modificar el DataFrame
                 df[col] = df[col].astype("float64")
-            except Exception as e:
+            except (ValueError, TypeError) as e:
                 print(f"Error formateando columna {col}: {e}")
     return df
