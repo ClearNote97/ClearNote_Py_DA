@@ -271,8 +271,8 @@ Esta es la diferencia clave al arrancar. **El comportamiento del `postCreateComm
 Mi forma de trabajar SQL desde Python es siempre la misma, **solo con SQLAlchemy** (sin ORM, sin drivers manuales por fuera):
 
 1. **Credenciales en `.env`** → las lee `src/config/config.py` con `python-dotenv` (`load_dotenv()` + `os.getenv`), expuestas como constantes de módulo.
-2. **Fábrica de engine en `data/sql/sql_utils.py`** → una función `get_engine…()` arma la URI y devuelve `sqlalchemy.create_engine(...)`. Un motor por origen de datos.
-3. **Las consultas viven en archivos `.sql`** (en `data/sql/`), nunca embebidas en el código Python.
+2. **Fábrica de engine en `src/db/connection.py`** → una función `get_engine…()` arma la URL con `sqlalchemy.engine.URL.create()` y devuelve `create_engine(url)`. Un motor por origen de datos. El código de conexión es **código**, por eso vive en `src/`, **no** en `data/`.
+3. **Las consultas viven en archivos `.sql`** (en `data/sql/`), nunca embebidas en el código Python. `data/sql/` contiene **solo `.sql`** (dato), nunca módulos Python.
 4. **Ejecución con pandas** → `pd.read_sql(query, engine)`.
 
 ### Credenciales separadas por motor
@@ -285,18 +285,30 @@ Mi forma de trabajar SQL desde Python es siempre la misma, **solo con SQLAlchemy
 | SQL Server | `MSSQL_` | `MSSQL_HOST`, `MSSQL_PORT`, `MSSQL_NAME`, `MSSQL_USER`, `MSSQL_PASSWORD` |
 | Túnel SSH | `SSH_` | `SSH_HOST`, `SSH_PORT`, `SSH_USER`, `SSH_PASSWORD` — grupo aparte, solo cuando el motor va por túnel |
 
-Y en `sql_utils.py`, **un engine por motor con nombre propio**: `get_engine_postgres()`, `get_engine_mssql()`, etc. Nunca un `get_engine()` genérico que mezcle orígenes.
+Y en `src/db/connection.py`, **un engine por motor con nombre propio**: `get_engine_postgres()`, `get_engine_mssql()`, etc. Nunca un `get_engine()` genérico que mezcle orígenes.
+
+> **`NAME` y `PORT` son opcionales.** Si no se definen (vienen vacíos/None), `URL.create()` los omite — útil cuando se trabaja contra un **DataWarehouse** sin seleccionar una única base de datos. No estorban si no están.
 
 ### Dos casos de conexión
 
-**Caso A — Conexión directa por URI.** El motor es alcanzable directamente (SQL Server en la red, o un Postgres sin túnel); el engine se arma con una URI de SQLAlchemy y `create_engine`, **sin dependencias extra**. Las contraseñas con caracteres especiales se codifican con `quote_plus`.
+**Caso A — Conexión directa.** El motor es alcanzable directamente (SQL Server en la red, o un Postgres sin túnel). El engine se arma con **`URL.create()`**, que **escapa solo** usuario, contraseña y parámetros — sin `quote_plus` manual ni `odbc_connect`, y omitiendo `NAME`/`PORT` cuando son `None`.
 ```python
-from urllib.parse import quote_plus
-import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
 
-# Ilustrativo con Postgres directo; para SQL Server la URI es mssql+pyodbc:///?odbc_connect=...
-uri = f"postgresql+psycopg://{USER}:{quote_plus(PASSWORD)}@{HOST}:{PORT}/{NAME}"
-engine = sqlalchemy.create_engine(uri)
+# SQL Server (pyodbc). NAME y PORT opcionales: si son None, URL.create los omite.
+url = URL.create(
+    "mssql+pyodbc",
+    username=config.MSSQL_USER,
+    password=config.MSSQL_PASSWORD,   # el escaping lo hace URL.create
+    host=config.MSSQL_HOST,
+    port=config.MSSQL_PORT,           # None si no se define
+    database=config.MSSQL_NAME,       # None si no se define
+    query={"driver": config.MSSQL_DRIVER},   # "ODBC Driver 17 for SQL Server"
+)
+engine = create_engine(url)
+
+# Postgres directo: mismo patrón con "postgresql+psycopg" y sin el query del driver.
 ```
 
 **Caso B — Conexión vía túnel SSH.** El motor solo es alcanzable a través de un servidor puente. Se agrega el grupo `SSH_*` y la fábrica **abre el túnel** antes de crear el engine, que apunta a `127.0.0.1:<puerto_local>`. Devuelve **`(engine, tunnel)`**: el túnel debe seguir abierto mientras uses el engine y se cierra con `tunnel.stop()` al final.
@@ -309,7 +321,7 @@ tunnel.stop()   # cerrar el túnel al terminar
 
 **Dependencia y build del Caso B (frágil — deuda conocida):**
 - Requiere `sshtunnel` (que arrastra `paramiko`, `cryptography`, `cffi`). Si el build falla por falta de wheels (p. ej. Python muy nuevo como 3.14), agregar al Dockerfile: `libffi-dev`, `libssl-dev`, y si `cryptography` compila desde fuente, `rustc`/`cargo`.
-- **Shim de compatibilidad obligatorio:** `sshtunnel 0.4.0` referencia `paramiko.DSSKey`, eliminado en `paramiko` 3.x → `AttributeError`. Antes de crear el túnel, en `sql_utils.py`:
+- **Shim de compatibilidad obligatorio:** `sshtunnel 0.4.0` referencia `paramiko.DSSKey`, eliminado en `paramiko` 3.x → `AttributeError`. Antes de crear el túnel, en `src/db/connection.py`:
   ```python
   import paramiko
   if not hasattr(paramiko, "DSSKey"):
