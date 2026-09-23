@@ -4,7 +4,7 @@
 > (+ investigación); el núcleo de app (backend/frontend/migration/spec-author/gobernanza) **no aplica** y se
 > quitó del roster (ver `_index.md`). Las **rutas** que citen estructura de app (`src/analytics`, `src/database`,
 > `gold`, `data/storage/…`) deben leerse como la convención de esta plantilla (`sandbox`→`tests`→`output`,
-> `src/utils`, `src/db`). Se afina en la sesión propia de esta plantilla.
+> `src/utils`). Se afina en la sesión propia de esta plantilla.
 
 
 Declara, **una sola vez y de forma agnóstica, QUÉ agentes de IA necesita este proyecto**: rol, cuándo se
@@ -29,7 +29,7 @@ trabajo del contrato (`README_AGENTS.md` §2):
    (`spec-author`, `backend-builder`, `frontend-builder`, `migration-writer`, `test-writer`), revisión
    (`code-reviewer`, `security-auditor`, `db-governance-reviewer`) y documentación (`doc-writer`).
 2. **Datos / analítica (opt-in).** Un pipeline por fases bajo `analytics-lead`:
-   ingesta → limpieza → SQL → stats/ML → visualización → reporte.
+   ingesta → limpieza → stats/ML → visualización → reporte.
 3. **Investigación académica (opt-in).** `literature-reviewer` + `academic-writer` (buscar ↔ redactar).
 
 Un proyecto activa las familias que su trabajo requiera: en una **app** manda el núcleo; en **analítica/DS**
