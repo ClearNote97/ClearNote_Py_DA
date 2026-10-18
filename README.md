@@ -3,7 +3,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white" alt="Python 3.14">
   <img src="https://img.shields.io/badge/uv-package%20manager-DE5FE9" alt="uv">
-  <img src="https://img.shields.io/badge/pandas-data-150458?logo=pandas&logoColor=white" alt="pandas">
   <img src="https://img.shields.io/badge/Dev_Container-Docker-2496ED?logo=docker&logoColor=white" alt="Dev Container">
   <img src="https://img.shields.io/badge/AI_agent-ready-10A37F" alt="AI agent ready">
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT">
