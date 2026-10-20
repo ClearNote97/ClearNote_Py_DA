@@ -65,6 +65,9 @@ mv ClearNote_Py_DA nuevo_nombre
 cd nuevo_nombre
 ```
 
+> El nombre de la carpeta es también el del devcontainer y el del contenedor (`<carpeta>_dev`):
+> **sin espacios** (usa `_` o `-`), porque Docker no los admite en nombres de contenedor.
+
 ### 4. Inicializa tu propio repositorio *(opcional)*
 
 ```bash
@@ -84,6 +87,8 @@ git push -u origin main
 
 En VS Code: **Ctrl+Shift+P → Reopen in Container**. Espera a que termine el `postCreateCommand`
 (prepara `.venv` e instala/sincroniza dependencias con `uv`). **No corras `pip install` a mano.**
+Al final corre el **smoke test** (sintaxis + dependencias + `src/utils`); puedes repetirlo cuando
+quieras con `bash scripts/smoke-test.sh`.
 
 ---
 
@@ -120,7 +125,7 @@ contenedor, el `postCreateCommand` detecta el estado del proyecto y actúa solo:
 
 - **Formateo y linting con Ruff**: formateo al guardar + `fixAll` y `organizeImports` en cada guardado.
 - **Type checking**: Pylance en modo `basic`, con *inlay hints* de tipos de variables y retornos.
-- **Extensiones preinstaladas**: Python, Pylance, Ruff, Jupyter, Even Better TOML, GitHub Copilot,
+- **Extensiones preinstaladas**: Python, Pylance, Ruff, Jupyter, Even Better TOML,
   Path Intellisense, Material Icon Theme.
 
 ---
@@ -137,6 +142,7 @@ contenedor, el `postCreateCommand` detecta el estado del proyecto y actúa solo:
 ├── sandbox/            # experimentos desechables — su contenido NO se versiona
 ├── tests/              # verificación formal (pytest) — el gate
 ├── output/             # entregable final, ya verificado
+├── scripts/            # smoke-test.sh (salud del proyecto)
 ├── src/                # código reutilizable
 │   └── utils/          # utilidades
 ├── .env.example        # plantilla de variables de entorno (copiar a .env)
