@@ -29,7 +29,7 @@ consistente**, sin instalar el toolchain del proyecto en tu máquina anfitriona.
 
 ## 🔄 Flujo de trabajo
 
-Del insumo al entregable, con un solo gate en el medio: nada llega a `output/` sin pasar por `tests/`.
+Del insumo al entregable, con un solo gate en el medio: nada llega a `output/` sin pasar por `tests/`. El carril de abajo muestra **qué queda documentado** en cada paso, según el estándar de documentación (§7 de [`README_AGENTS.md`](./README_AGENTS.md)).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/diagramas/flujo-trabajo-oscuro.svg">
