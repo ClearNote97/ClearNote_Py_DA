@@ -1,6 +1,8 @@
-# 🐍 ClearNote Py DA — Plantilla Dev Container para análisis de datos en Python
+<div align="center">
 
-<p align="center">
+<img src="./assets/diagramas/banner.svg" alt="ClearNote Py DA — Plantilla Dev Container para análisis de datos en Python" width="100%">
+
+<p>
   <img src="https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white" alt="Python 3.14">
   <img src="https://img.shields.io/badge/uv-package%20manager-DE5FE9" alt="uv">
   <img src="https://img.shields.io/badge/Dev_Container-Docker-2496ED?logo=docker&logoColor=white" alt="Dev Container">
@@ -8,7 +10,13 @@
   <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT">
 </p>
 
-<p align="center"><em>Análisis de datos en Python, reproducible y portable — del dato crudo al hallazgo.</em></p>
+<p><em>Análisis de datos en Python, reproducible y portable — del dato crudo al hallazgo.</em></p>
+
+<a href="#-instalación-y-uso"><b>Instalación</b></a> &nbsp;·&nbsp; <a href="#-estructura-del-proyecto"><b>Estructura</b></a> &nbsp;·&nbsp; <a href="#-qué-se-versiona-y-qué-no"><b>Qué se versiona</b></a> &nbsp;·&nbsp; <a href="./README_AGENTS.md"><b>Contrato de trabajo</b></a>
+
+</div>
+
+<br>
 
 Plantilla **reproducible, ligera y portable** para proyectos de análisis de datos en Python sobre
 **VS Code + Dev Containers + Docker + `uv`**. El objetivo es trabajar en un entorno **aislado y
@@ -16,6 +24,17 @@ consistente**, sin instalar el toolchain del proyecto en tu máquina anfitriona.
 
 > **¿Buscas cómo trabajamos día a día (la dinámica agente ⇄ tú)?** Eso vive en **[`README_AGENTS.md`](./README_AGENTS.md)**.
 > Este archivo es el *qué es y cómo se instala*; ese otro es el *cómo colaboramos*.
+
+---
+
+## 🔄 Flujo de trabajo
+
+Del insumo al entregable, con un solo gate en el medio: nada llega a `output/` sin pasar por `tests/`.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/diagramas/flujo-trabajo-oscuro.svg">
+  <img alt="Diagrama del flujo de trabajo de la plantilla" src="./assets/diagramas/flujo-trabajo-claro.svg" width="100%">
+</picture>
 
 ---
 
@@ -137,6 +156,7 @@ contenedor, el `postCreateCommand` detecta el estado del proyecto y actúa solo:
 ├── .devcontainer/      # Dockerfile + devcontainer.json (definición del entorno)
 ├── data/               # datos del proyecto
 │   └── other/          # archivos de datos en formatos no-SQL (.csv, .parquet, .xlsx, …)
+├── assets/             # lo visual del proyecto: marca · imagenes · iconos · fuentes · diagramas
 ├── docs/               # documentación: objetivo, bitácora de decisiones, diccionario de datos
 ├── notebooks/          # exploración y prototipado (.py / .ipynb)
 ├── sandbox/            # experimentos desechables — su contenido NO se versiona
@@ -190,14 +210,9 @@ sandbox/*
 
 ---
 
-## ⚖️ Licencia
+<div align="center">
 
-Distribuido bajo licencia [MIT](https://opensource.org/license/MIT). Puedes copiar, modificar y reutilizar libremente esta plantilla.
+<sub>Distribuido bajo licencia <a href="https://opensource.org/license/MIT">MIT</a> · Puedes copiar, modificar y reutilizar libremente esta plantilla.</sub><br>
+<sub>Hecho por <b>MSc. Nicolás Enrique Valencia Santiago</b> · Enriquecido con <a href="https://github.com/ftuga/helix_asisten">Helix</a>, el agente de IA de <a href="https://github.com/ftuga">ftuga</a>.</sub>
 
-## ✍️ Autor
-
-**MSc. Nicolás Enrique Valencia Santiago**
-
-## 🙏 Agradecimientos
-
-Plantilla enriquecida con la asistencia de [Helix — agente de IA](https://github.com/ftuga/helix_asisten) de [ftuga](https://github.com/ftuga).
+</div>
