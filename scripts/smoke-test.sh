@@ -4,7 +4,7 @@
 # =============================================================================
 #   Uso:  bash scripts/smoke-test.sh
 #
-# Corre en el host o dentro del devcontainer. Lo invoca el postCreateCommand al final
+# Corre en el host o dentro del devcontainer. Lo invoca init.sh (vía el postCreateCommand) al final
 # (sin bloquear) y es parte del ritual de arranque (README_AGENTS §3).
 #
 # Salida: ✅ ok · ⚠️ aviso (no falla) · ❌ falla (exit 1).

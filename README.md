@@ -104,7 +104,7 @@ git push -u origin main
 
 ### 5. Abre en el contenedor
 
-En VS Code: **Ctrl+Shift+P → Reopen in Container**. Espera a que termine el `postCreateCommand`
+En VS Code: **Ctrl+Shift+P → Reopen in Container**. Espera a que termine el `postCreateCommand` (corre `init.sh`)
 (prepara `.venv` e instala/sincroniza dependencias con `uv`). **No corras `pip install` a mano.**
 Al final corre el **smoke test** (sintaxis + dependencias + `src/utils`); puedes repetirlo cuando
 quieras con `bash scripts/smoke-test.sh`.
@@ -127,7 +127,7 @@ quieras con `bash scripts/smoke-test.sh`.
 ### Gestión de dependencias con `uv`
 
 `uv` reemplaza a `pip` como herramienta de trabajo (más rápido, lockfiles reproducibles). Al crear el
-contenedor, el `postCreateCommand` detecta el estado del proyecto y actúa solo:
+contenedor, el `postCreateCommand` llama a **`init.sh`**, que detecta el estado del proyecto y actúa solo:
 
 | Estado del repo | Qué ejecuta |
 |---|---|
@@ -165,6 +165,7 @@ contenedor, el `postCreateCommand` detecta el estado del proyecto y actúa solo:
 ├── scripts/            # smoke-test.sh (salud del proyecto)
 ├── src/                # código reutilizable
 │   └── utils/          # utilidades
+├── init.sh             # deja el entorno listo (uv + smoke-test); lo corre el postCreateCommand
 ├── .env.example        # plantilla de variables de entorno (copiar a .env)
 ├── requirements.txt    # dependencias (base para pyproject.toml + uv.lock)
 ├── README.md           # este archivo (qué es y cómo se instala)
